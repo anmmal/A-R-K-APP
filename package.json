@@ -1,0 +1,13 @@
+{
+  "name": "ark-app-mvp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.mjs",
+    "test": "NODE_ENV=test node --test",
+    "migrate:baseline": "node scripts/migrate.mjs baseline",
+    "migrate:up": "node scripts/migrate.mjs up",
+    "migrate:status": "node scripts/migrate.mjs status"
+  }
+}

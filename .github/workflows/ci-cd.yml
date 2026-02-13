@@ -1,0 +1,74 @@
+name: CI/CD
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+  deploy:
+    name: Deploy
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Package build artifact
+        run: |
+          tar -czf ark-app.tgz src public package.json README.md DEPLOYMENT.md db scripts
+
+      - name: Deploy placeholder
+        env:
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+        run: |
+          echo "Replace this step with your platform deployment command (Render/Fly/AWS)."
+          echo "Target base URL: ${APP_BASE_URL}"
+
+      - name: Post-deploy smoke tests
+        env:
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+        run: |
+          test -n "$APP_BASE_URL" || (echo "APP_BASE_URL secret is required" && exit 1)
+          curl --fail --silent --show-error "$APP_BASE_URL/api/menu" > /tmp/menu.json
+          curl --fail --silent --show-error "$APP_BASE_URL/api/impact" > /tmp/impact.json
+          curl --fail --silent --show-error -X POST "$APP_BASE_URL/api/orders" \
+            -H 'content-type: application/json' \
+            -d '{"userId":"ci-smoke","mode":"pickup","payWithPoints":false,"items":[{"id":"latte-oat","qty":1}]}' > /tmp/order.json
+          echo "Smoke tests passed"

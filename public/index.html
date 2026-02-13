@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>A R K App MVP</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="section">
+      <div class="space"><h1>A R K</h1><button id="networkBtn" class="btn secondary">Online</button></div>
+      <p id="networkHint" class="alert hidden">Offline mode: menu + wallet cached, checkout disabled.</p>
+    </header>
+
+    <section id="home" class="section tab">
+      <article class="card">
+        <p class="label">ONBOARDING</p>
+        <h2>Guest → Registered in one tap</h2>
+        <p class="muted">Start as guest for speed, then save profile/rewards when ready.</p>
+        <div class="row"><button class="btn secondary">Guest checkout</button><button id="registerBtn" class="btn">Create account</button></div>
+        <p id="registerMsg" class="muted"></p>
+      </article>
+      <article class="card">
+        <p class="label">ORDER FLOW</p>
+        <h2>Oat Milk Latte • Pickup</h2>
+        <p class="muted">Delivery is shown as placeholder for later phase.</p>
+        <div class="row"><button id="minus" class="btn secondary">-</button><strong id="qty">0</strong><button id="plus" class="btn secondary">+</button></div>
+        <div class="space"><span>Total: <strong id="total">0.00 KWD</strong></span><button id="placeOrder" class="btn">Place order</button></div>
+        <p id="orderState" class="muted"></p>
+      </article>
+    </section>
+
+    <section id="menu" class="section tab hidden">
+      <div class="space"><h2>Browse Menu</h2><span class="pill">Coffee / Tea / Products</span></div>
+      <div id="menuGrid" class="grid"></div>
+    </section>
+
+    <section id="wallet" class="section tab hidden">
+      <article class="card">
+        <p class="label">AVAILABLE BALANCE</p>
+        <h2 class="big" id="points">1,250</h2>
+        <p class="brand">ARK POINTS</p>
+        <p class="alert">You're 250 points away from a VIP upgrade.</p>
+      </article>
+      <article class="card">
+        <h3>Recent Activity</h3>
+        <div class="space"><span>Oat Milk Cortado</span><strong class="ok">+45 pts</strong></div>
+        <div class="space"><span>Reward Redeemed</span><strong>-500 pts</strong></div>
+      </article>
+    </section>
+
+    <section id="impact" class="section tab hidden">
+      <article class="card"><h2>Impact Tracker</h2><p id="impactTxt" class="muted"></p></article>
+      <article class="card"><h3>Nearby ARK</h3><div id="locList"></div></article>
+    </section>
+
+    <section id="profile" class="section tab hidden">
+      <article class="card">
+        <h2>Profile & Order History</h2><p class="muted">jane.cooper@arkcoffee.com</p>
+        <div class="space"><span>#ARK-1029</span><strong>Completed</strong></div>
+        <div class="space"><span>#ARK-0841</span><strong>Cancelled</strong></div>
+      </article>
+    </section>
+
+    <nav class="nav">
+      <button data-tab="home" class="active">HOME</button>
+      <button data-tab="menu">MENU</button>
+      <button data-tab="wallet">WALLET</button>
+      <button data-tab="impact">IMPACT</button>
+      <button data-tab="profile">PROFILE</button>
+    </nav>
+  </main>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
